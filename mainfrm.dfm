@@ -1,11 +1,11 @@
 object fMain: TfMain
   Left = 291
   Top = 178
-  Width = 544
-  Height = 394
   HorzScrollBar.Smooth = True
   HorzScrollBar.Tracking = True
   Caption = 'SSG'#39's Own Commander'
+  ClientHeight = 355
+  ClientWidth = 528
   Color = clBtnFace
   Font.Charset = TURKISH_CHARSET
   Font.Color = clWindowText
@@ -24,21 +24,25 @@ object fMain: TfMain
   TextHeight = 13
   object sbMain: TStatusBar
     Left = 0
-    Top = 326
-    Width = 536
+    Top = 336
+    Width = 528
     Height = 19
     Panels = <>
     SimplePanel = True
+    ExplicitTop = 326
+    ExplicitWidth = 536
   end
   object pCmdLine: TPanel
     Left = 0
-    Top = 299
-    Width = 536
+    Top = 309
+    Width = 528
     Height = 27
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
     OnContextPopup = pCmdLineContextPopup
+    ExplicitTop = 299
+    ExplicitWidth = 536
     object Panel1: TPanel
       Left = 0
       Top = 0
@@ -69,17 +73,18 @@ object fMain: TfMain
       BevelOuter = bvNone
       TabOrder = 1
       DesignSize = (
-        336
+        328
         27)
       object eCmdLine: TEdit
         Left = 8
         Top = 2
-        Width = 324
+        Width = 316
         Height = 21
         TabStop = False
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 0
         OnKeyDown = eCmdLineKeyDown
+        ExplicitWidth = 324
       end
     end
   end

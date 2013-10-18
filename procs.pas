@@ -54,7 +54,7 @@ begin
   res := GetEnvironmentVariable(PChar(key),@buf,SizeOf(buf));
   if res = 0 then Result := '' else begin
     buf[res] := #0;
-    Result := StrPas(@buf);
+    Result := string(@buf);
   end;
 end;
 

@@ -49,7 +49,7 @@ type
     procedure MkDir(const dir:string);override;
     procedure Execute(item:TFSItem);override;
     function getStream(item:TFSItem):TStream;override;
-    procedure setDate(item:TFSItem; newdate:TDateTime);override;
+    procedure SetDate(item:TFSItem; newdate:TDateTime);override;
     procedure setAttributes(item:TFSItem; newattr:integer);override;
     function supportedAttributes:integer;override;
 
@@ -750,7 +750,7 @@ begin
             Item.VolumeType := vtUnknown;
         end; {case}
         if dt <> DRIVE_REMOVABLE then
-          if GetVolumeInformation(PChar(s),@ar,SizeOf(ar),@D,D,D,NIL,0) then item.Name := StrPas(@ar);
+          if GetVolumeInformation(PChar(s),@ar,SizeOf(ar),@D,D,D,NIL,0) then item.Name := string(@ar);
 
         list.Add(item);
         s := '';
@@ -771,7 +771,7 @@ begin
   Root := ExtractFileDrive(url);
   if length(Root) = 1 then Root := Root + ':\' else Root := Root + '\';
   FillChar(data,SizeOf(data),0);
-  h := FindFirstFile(PChar(Root+'\*.*'),data);
+  h := FindFirstFileA(PAnsiChar(AnsiString(Root+'\*.*')),data);
   Windows.FindClose(h);
   if h = INVALID_HANDLE_VALUE then
     if GetLastError <> FINDFIRST_EMPTY then
@@ -792,7 +792,7 @@ begin
   with Info,Info.Items do begin
     Clear;
     if w2k then Changed := false;
-    h := FindFirstFile(PChar(IncludeTrailingPathDelimiter(Info.Path)+'*.*'),data);
+    h := FindFirstFileA(PAnsiChar(AnsiString(IncludeTrailingPathDelimiter(Info.Path)+'*.*')),data);
     if h <> INVALID_HANDLE_VALUE then begin
       repeat
         with data do begin
@@ -800,8 +800,8 @@ begin
             attr := dwFileAttributes;
             if attr and (faDirectory or faSysFile or faHidden or faReadOnly or faArchive) <> 0 then begin
               if attr and faDirectory > 0 then begin
-                if StrComp(cFileName,'.') = 0 then continue;
-                if StrComp(cFileName,'..') = 0 then attr := attr or faNonSelectable;
+                if string(cFileName) = '.' then continue;
+                if string(cFileName) = '..' then attr := attr or faNonSelectable;
                 attr := attr or faBrowseable;
               end;
               item := TFSItem.Create;
@@ -825,7 +825,7 @@ begin
             raise EFSException.Create('Processing error: '+SysErrorMessage(GetLastError));
           end;
         end;
-      until not FindNextFile(h,data);
+      until not FindNextFileA(h,data);
       Windows.FindClose(h);
     end;
     l := LockList;
@@ -849,8 +849,8 @@ begin
     if GetVolumeInformation(@proot,@ar,SizeOf(ar),@serial,maxFNLen,flags,@fs,
       SizeOf(fs)) then begin
       VolumeName := ExcludeTrailingPathDelimiter(Root);
-      VolumeLabel := StrPas(@ar);
-      FileSystem := StrPas(@fs);
+      VolumeLabel := string(@ar);
+      FileSystem := string(@fs);
       SerialNumber := IntToHex(serial,8);
     end;
     case GetDriveType(@proot) of
@@ -894,12 +894,12 @@ procedure TNativeFSHandler.readItemSize(item: TFSItem);
     h:THandle;
   begin
     Result := 0;
-    h := FindFirstFile(PChar(path+'*.*'),data);
+    h := FindFirstFileA(PAnsiChar(AnsiString(path+'*.*')),data);
     if h <> INVALID_HANDLE_VALUE then with data do repeat
       inc(Result,(nFileSizeHigh shl 32) or nFileSizeLow);
       if (dwFileAttributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and (cFileName[0] <> '.')
         then inc(Result,Recurse(path+cFileName+'\'));
-    until not FindNextFile(h,data);
+    until not FindNextFileA(h,data);
     Windows.FindClose(h);
   end;
 begin

@@ -55,7 +55,6 @@ object FilePanel: TFilePanel
       Top = 26
       Width = 321
       Height = 17
-      DragReorder = False
       Sections = <
         item
           BiDiMode = bdLeftToRight
@@ -162,7 +161,6 @@ object FilePanel: TFilePanel
         Width = 293
         Height = 21
         Style = csDropDownList
-        ItemHeight = 13
         TabOrder = 0
       end
     end

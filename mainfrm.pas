@@ -343,7 +343,7 @@ begin
         cnt := DragQueryFile(w,$FFFFFFFF,NIL,0);
         for subn := 0 to cnt-1 do begin
           DragQueryFile(w,subn,@buf,SizeOf(buf));
-          ShowMessage(StrPas(@buf));
+          ShowMessage(string(@buf));
         end;
         break;
       end;

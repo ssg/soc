@@ -173,7 +173,7 @@ uses
 
   viewer, mainfrm, Procs, fsnative,
 
-  FileCtrl, CommCtrl, ShellApi, ListActns;
+  UITypes, Types, FileCtrl, CommCtrl, ShellApi, ListActns;
 
 {$R *.dfm}
 
